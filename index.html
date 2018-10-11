@@ -1,0 +1,86 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SoundFX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/howler@2.0.15/dist/howler.min.js"></script>
+    <script type="text/javascript" src="js/paper-full.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+
+        var keyData = {
+            "q":{
+                color:"blue",
+                sound: new Howl({
+                    src: ['sounds/bubbles.mp3']
+                })
+            },
+            "w":{
+                color:"red",
+                sound: new Howl({
+                    src: ['sounds/clay.mp3']
+                })
+            },
+            "e":{
+                color:"green",
+                sound: new Howl({
+                    src: ['sounds/flash-1.mp3']
+                })
+            },
+            "r":{
+                color:"yellow",
+                sound: new Howl({
+                    src: ['sounds/strike.mp3']
+                })
+            },
+            "t":{
+                color:"purple",
+                sound: new Howl({
+                    src: ['sounds/prism-1.mp3']
+                })
+            },
+            "y":{
+                color:"orange",
+                sound: new Howl({
+                    src: ['sounds/moon.mp3']
+                })
+            },
+        }
+        
+        var circles = [];
+
+        function onKeyDown(event){
+            var maxPoint = new Point(view.size.width, view.size.height);
+            var randomPoint = Point.random();
+            var point = maxPoint * randomPoint;
+            var newCircle = new Path.Circle(point, 500);
+            if(keyData[event.key]){
+                newCircle.fillColor = keyData[event.key].color;
+                circles.push(newCircle);
+                keyData[event.key].sound.play();
+            }
+        }
+
+        function onFrame(event){
+            for(var i = 0; i < circles.length; i++){
+                circles[i].fillColor.hue +=1;
+                circles[i].scale(.9);
+                if(circles[i].area < 1){
+                    circles[i].remove();
+                    circles.splice(i, 1);
+                }
+            }
+        }
+
+
+        
+
+        
+    </script>
+</head>
+<body>
+    <canvas id="myCanvas" resize="true" highdpi="off"></canvas>
+</body>
+</html>
